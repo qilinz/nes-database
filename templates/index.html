@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}NES Data{% endblock %}
+
+{% block content %}
+<div class="jumbotron text-center">
+    <div class="container">
+        <h1 class="display-4">🎮 NES Database 🕹</h1>
+        <p class="lead">Want to play a retro game but don't know where to start?</p>
+        <hr class="my-4">
+        <p>You've found the right place! Checkout my database to find your favorite or randomly select one </p>
+        <a class="btn btn-warning btn-lg" href="{{ url_for('games')}}" role="button">Show Me All Games 📺</a>
+        <a class="btn btn-warning btn-lg" href="{{ url_for('random')}}" role="button">Game Draw 🎲 </a>
+        <br>
+        <br>
+<!--        <a class="btn btn-outlined-light btn-lg" href="{{ url_for('add_cafe')}}" role="button">Add a new spot</a>-->
+    </div>
+</div>
+
+{% endblock %}
