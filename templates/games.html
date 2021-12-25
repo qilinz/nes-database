@@ -8,27 +8,41 @@
     <div class="row">
         <div class="col-sm-12">
 
-            <h1>All Games</h1>
+            <h1>All Games (published in North American) </h1>
 
-            <table class="table">
+            <table class="table game-table">
                 <thead>
-                <tr>
-                    {% for col in games[0]: %}
-                    <th scope="col">{{ col }}</th>
-                    {% endfor %}
-                </tr>
+                <td></td>
+                <td style="vertical-align: middle">Title</td>
+                <td style="vertical-align: middle">Developer</td>
+                <td style="vertical-align: middle">Publisher</td>
+                <td style="vertical-align: middle">Release Year</td>
+                <td style="vertical-align: middle">Genre(s)</td>
+                <td style="vertical-align: middle">Multiplayer Mode</td>
                 </thead>
                 <tbody>
-                {% for row in games[1:]: %}
+                {% for game in games: %}
+
+                {% if game.publisher_na != "Unreleased": %}
                 <tr>
-                    {% for item in row:%}
-                        {% if item[:4] == "http": %}
-                            <td><a href="{{item}}">Magic Link</a></td>
-                        {% else %}
-                            <td>{{item}}</td>
+                    <td  style="width:10%">
+                        {% if game.img_url: %}
+                        <img style="max-width:100%" src="{{game.img_url}}" alt="">
                         {% endif %}
-                    {% endfor %}
+                    </td>
+                    <td style="vertical-align: middle"><a href="{{game.wiki_url}}">{{ game.title }}</a></td>
+                    <td style="vertical-align: middle">{{ game.developer }}</td>
+                    <td style="vertical-align: middle">{{ game.publisher_na }}</td>
+                    <td style="vertical-align: middle">{{ game.release_na }}</td>
+                    <td style="vertical-align: middle">{{ game.genre }}</td>
+                    <td style="vertical-align: middle">
+                        {% if game.multi_support == "1": %}
+                        ✅
+                        {% endif %}
+                    </td>
+
                 </tr>
+                {% endif %}
                 {% endfor %}
                 </tbody>
 

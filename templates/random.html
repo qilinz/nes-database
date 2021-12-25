@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Game Draw{% endblock %}
+
+{% block content %}
+<div class="jumbotron text-center">
+    <div class="container">
+        {% if game.img_url: %}
+        <img style="max-width:100%" src="{{game.img_url}}" alt="">
+        {% endif %}
+        <h1 class="display-4">🎮 <a href="{{game.wiki_url}}">{{ game.title }}</a></h1>
+        <hr class="my-4">
+        <p>Developer: {{game.developer}}</p>
+        <p>Publisher: {{game.publisher_na}}</p>
+        <p>Release Year: {{game.release_na}}</p>
+        <p>Genre: {{game.genre}}</p>
+        <p>Multiplayer support:
+            {% if game.multi_support == "1": %}
+            ✅
+            {% else: %}
+            ❌
+            {% endif %}
+        </p>
+        <br>
+        <p><a href="{{ url_for('home') }}">Return to home page</a></p>
+    </div>
+</div>
+
+{% endblock %}
