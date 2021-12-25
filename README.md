@@ -6,3 +6,4 @@ This database contains data of NES games collected from [Wikipedia](https://en.w
 - [Data Wrangling script](https://github.com/qilinz/nes-database/blob/main/data_wrangling/data_process.py)
 - [Processed dataset](https://github.com/qilinz/nes-database/blob/main/game_data_processed.csv)
 - [Website building program](https://github.com/qilinz/nes-database/blob/main/main.py)
+- [API Documentation](https://documenter.getpostman.com/view/17174760/UVREj4kn)

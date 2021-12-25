@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+
+{% block title %}Game API{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+
+    <div class="container">
+        <h1>Welcome to the NES Game API! </h1>
+        <hr>
+        <br>
+        <p>Through this API, you can:</p>
+        <h3>1. Get a random game. </h3>
+        <p>Sample Query: </p>
+        <p>http://127.0.0.1:5000/api/random</p>
+        <h3>2. Get all the games. </h3>
+        <p>Sample Query: </p>
+        <p>http://127.0.0.1:5000/api/all</p>
+        <h3>3. Search a game by name. </h3>
+        <p>Sample Query: </p>
+        <p>http://127.0.0.1:5000/api/search?title=1942</p>
+        <h3>4. Update game genre. </h3>
+        <p>Sample Query: </p>
+        <p>http://127.0.0.1:5000/api/update-genre/2?new_genre=Platform</p>
+        <h3>5. Add a game. </h3>
+        <p>Sample Query: </p>
+        <p>http://127.0.0.1:5000/api/add</p>
+        <p>Body need to be provided according to documentation</p>
+        <h3>6. Delete a game. </h3>
+        <p>Sample Query: </p>
+        <p>http://127.0.0.1:5000/api/delete/714?api_key={api_key}</p>
+
+        <br>
+        <p><strong>Detailed API documentations can be found <a href="https://documenter.getpostman.com/view/17174760/UVREj4kn">here</a>.</strong> </p>
+        <br>
+        <p><a href="{{ url_for('home') }}">Return to home page</a></p>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,16 +1,11 @@
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for, request, jsonify
 from flask_bootstrap import Bootstrap
-from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, SelectField
-from wtforms.validators import DataRequired, URL
 from flask_sqlalchemy import SQLAlchemy
-from flask_ckeditor import CKEditor, CKEditorField
 import pandas as pd
 from random import choice
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
-ckeditor = CKEditor(app)
+app.config['SECRET_KEY'] = 'hvidsv78ag4yfqf6ic7cfow8cwevw23'
 Bootstrap(app)
 
 # --------------------------------Create db-------------------------------------------
@@ -34,6 +29,13 @@ class Game(db.Model):
     wiki_url = db.Column(db.String(250))
     genre = db.Column(db.String(250))
     multi_support = db.Column(db.String(250), nullable=False)
+
+    def to_dict(self):
+        return {column.name: getattr(self, column.name) for column in self.__table__.columns}
+
+
+## API setup
+TopSecretKey = "kvjnfsdjlbahshvsae5164644t3g544w34ewagruhru"
 
 
 # db.create_all()
@@ -78,6 +80,104 @@ def random():
     random_game = choice(all_games)
     return render_template('random.html', game=random_game)
 
+
+@app.route('/api')
+def api():
+    return render_template("api.html")
+
+
+# --------------------------------API response------------------------------------------
+@app.route('/api/random')
+def api_random():
+    all_games = db.session.query(Game).all()
+    random_game = choice(all_games)
+    return jsonify(game=random_game.to_dict())
+
+
+@app.route('/api/all')
+def api_all():
+    all_games = db.session.query(Game).all()
+    game_list = [game.to_dict() for game in all_games]
+    return jsonify(games=game_list)
+
+
+@app.route('/api/search')
+def api_search():
+    title = request.args.get("title")
+    game = Game.query.filter_by(title=title).first()
+    if not game:
+        return jsonify(
+            error={
+                "Not Found": "Sorry, this game is not on NES."
+            }
+        ), 404
+    return jsonify(games=game.to_dict())
+
+
+@app.route('/api/update-genre/<int:game_id>', methods=["PATCH"])
+def api_update_genre(game_id):
+    game_to_update = Game.query.get(game_id)
+    if not game_to_update:
+        return jsonify(
+            error={
+                "Not Found": "Sorry, we don't have a game with the given id."
+            }
+        ), 404
+    game_to_update.genre = request.args.get("new_genre")
+    db.session.commit()
+    return jsonify(
+        message={
+            "Success": "Update the game genre successfully."
+        }
+    ), 200
+
+
+@app.route('/api/add', methods=["POST"])
+def api_add():
+    new_game = Game(
+        title=request.form.get("title"),
+        developer=request.form.get("developer"),
+        publisher_na=request.form.get("publisher_na"),
+        publisher_eu=request.form.get("publisher_eu"),
+        release_na=request.form.get("release_na"),
+        release_eu=request.form.get("release_eu"),
+        img_url=request.form.get("img_link"),
+        wiki_url=request.form.get("wiki_link"),
+        genre=request.form.get("genre"),
+        multi_support=bool(request.form.get("multi_support")),
+    )
+    db.session.add(new_game)
+    db.session.commit()
+    return jsonify(
+        message={
+            "Success": "Add the game successfully."
+        }
+    ), 200
+
+
+@app.route('/api/delete/<int:game_id>', methods=["DELETE"])
+def api_delete(game_id):
+    user_key = request.args.get("api_key")
+    if user_key != TopSecretKey:
+        return jsonify(
+            error={
+                "Not Allowed": "Sorry, that's not allowed. Make sure you have the correct api_key."
+            }
+        ), 403
+    game_to_delete = Game.query.get(game_id)
+    if game_to_delete:
+        db.session.delete(game_to_delete)
+        db.session.commit()
+        return jsonify(
+            message={
+                "Success": "Delete the game successfully."
+            }
+        ), 200
+    return jsonify(
+        error={
+            "Not Found": "Sorry, we don't have a game with the given id."
+        }
+    ), 404
 
 
 if __name__ == '__main__':
