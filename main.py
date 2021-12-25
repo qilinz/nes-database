@@ -134,6 +134,13 @@ def api_update_genre(game_id):
 
 @app.route('/api/add', methods=["POST"])
 def api_add():
+    game_title = request.form.get("title")
+    if Game.query.filter_by(title=game_title).first():
+        return jsonify(
+            error={
+                "Bad Request": "This game already exists. "
+            }
+        ), 400
     new_game = Game(
         title=request.form.get("title"),
         developer=request.form.get("developer"),
