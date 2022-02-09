@@ -1,10 +1,11 @@
+import os
 from flask import Flask, render_template, redirect, url_for, request, jsonify
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from random import choice
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'hvidsv78ag4yfqf6ic7cfow8cwevw23'
+app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
 Bootstrap(app)
 
 # --------------------------------Create db-------------------------------------------
@@ -34,7 +35,7 @@ class Game(db.Model):
 
 
 ## API setup
-TopSecretKey = "kvjnfsdjlbahshvsae5164644t3g544w34ewagruhru"
+TopSecretKey = os.environ.get("API_KEY")
 
 
 # db.create_all()
