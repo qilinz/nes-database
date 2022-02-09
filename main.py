@@ -71,6 +71,7 @@ def home():
 @app.route('/games')
 def games():
     all_games = db.session.query(Game).all()
+
     return render_template('games.html', games=all_games)
 
 
@@ -83,7 +84,8 @@ def random():
 
 @app.route('/api')
 def api():
-    return render_template("api.html")
+    host_url = os.environ.get("HOST_URL")
+    return render_template("api.html", url=host_url)
 
 
 # --------------------------------API response------------------------------------------

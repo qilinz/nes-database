@@ -28,3 +28,7 @@ thead {
     margin-top: 20px;
     padding-top: 20px;
 }
+
+.method-block {
+    padding: 5px 0;
+}
