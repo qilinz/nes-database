@@ -1,7 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, request, jsonify
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
-import pandas as pd
 from random import choice
 
 app = Flask(__name__)
